@@ -22,6 +22,7 @@
  *       images and strings
  *
  ******************************************************************************/
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FileDialog;
