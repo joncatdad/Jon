@@ -16,18 +16,18 @@ import java.util.Scanner;
  *	@author	Jonathan Chen
  *	@since	January 15, 2024
  */
-public class WordUtilities {
+public class WordUtilities{
 	private List<String> words;				// list of words
-	public WordUtilities() {
+	public WordUtilities(){
 		words = new ArrayList<String>();
 	}
 	/**
 	 *	Read in the words from fileName
 	 *	@param fileName		name of the file containing words
 	 */
-	public void readWordsFromFile(String fileName) {
+	public void readWordsFromFile(String fileName){
 		Scanner inFile = FileUtils.openToRead(fileName);
-		while (inFile.hasNext()){
+		while(inFile.hasNext()){
 			words.add(inFile.next());
 		}
 		inFile.close();		
@@ -39,7 +39,7 @@ public class WordUtilities {
 	 *	@return			if found, the index of the word inside words;
 	 *					if not found, a negative number
 	 */
-	public int findWord(String word) {
+	public int findWord(String word){
 		return binarySearch(words, word);
 	}
 	/**
@@ -50,9 +50,9 @@ public class WordUtilities {
 	 *	@return					if found, the index of the word inside words;
 	 *							if not found, a negative number
 	 */
-	public int binarySearch(List<String> listOfWords, String target) {
+	public int binarySearch(List<String> listOfWords, String target){
 		// if listOfWords is empty then return not found
-		if (listOfWords.size() == 0) return -1;
+		if(listOfWords.size() == 0) return -1;
 		// otherwise, recursively perform binary search to find target word
 		return binarySearchRecurse(listOfWords, target, 0, listOfWords.size() - 1);
 		// otherwise, iteratively perform binary search to find target word
@@ -70,12 +70,12 @@ public class WordUtilities {
 	 *							if not found, a negative number
 	 */
 	public int binarySearchRecurse(List<String> listOfWords, String target,
-										int low, int high) {
+										int low, int high){
 		// if low index is greater than high, target not found and return negative number
 		if(low > high) return -1;
 		
 		// compute middle index
-		int mid = (low + high)/2;
+		int mid =(low + high)/2;
 		
 		// compare the target to the mid index
 		int diff = target.compareTo(listOfWords.get(mid));
@@ -84,7 +84,7 @@ public class WordUtilities {
 		if(diff == 0) return mid;
 		
 		// if target is less than mid, then check bottom of list recursively
-		else if (diff <0)
+		else if(diff <0)
 			return binarySearchRecurse(listOfWords,target,low,mid-1);
 		
 		// otherwise, target is greater than mid so check top of list recursively
@@ -100,12 +100,12 @@ public class WordUtilities {
 	 *	@return					if found, the index of the word inside words;
 	 *							if not found, a negative number
 	 */
-	public int binarySearchIterative(List<String> listOfWords, String target) {
+	public int binarySearchIterative(List<String> listOfWords, String target){
 		// Insert your code here
 		int low = 0; 
 		int high = listOfWords.size()-1;
 		while(low<=high){
-			int mid = (low+high)/2;
+			int mid =(low+high)/2;
 			int diff = target.compareTo(listOfWords.get(mid));
 			if(diff == 0) return mid;
 			else if(diff >0) low = mid +1;
@@ -118,11 +118,11 @@ public class WordUtilities {
 	/************************* Test program *****************************/
 	/********************************************************************/
 	private final String FILE_NAME = "randomWords.txt";	// list of random words
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		WordUtilities wu = new WordUtilities();
 		wu.run();
 	}
-	public void run() {
+	public void run(){
 		// 1. read the file of words
 		readWordsFromFile(FILE_NAME);
 		// 2. sort the words
@@ -130,13 +130,13 @@ public class WordUtilities {
 		sm.mergeSort(words);
 		// 3. find the words
 		System.out.println("\nTesting findWord method\n-----------------------");
-		String[] wordList = { "hello", "foo", "utilitarian", "frufru", 
+		String[] wordList ={ "hello", "foo", "utilitarian", "frufru", 
 							  "student", "fubsy", "pulchritude", "callipygian",
 							  "whithersoever" };
-		for (int a = 0; a < wordList.length; a++) {
+		for(int a = 0; a < wordList.length; a++){
 			System.out.print("\"" + wordList[a] + "\"");
 			int index = findWord(wordList[a]);
-			if (index >= 0) System.out.println(" found, index = " + index);
+			if(index >= 0) System.out.println(" found, index = " + index);
 			else System.out.println(" NOT found");
 		}
 		System.out.println();
@@ -147,18 +147,21 @@ public class WordUtilities {
 	 *	@param letters	the letters
 	 *	@return			true if the word's chars match; false otherwise
 	 */
-	public boolean wordMatch(String word, String letters) {
+	private boolean wordMatch(String word, String letters) {
 		// if the word is longer than letters return false
-		if (word.length() > letters.length()) return false;
+		if (word.length() > letters.length()){
+			return false;
+		}
 		// while there are still characters in word, check each word character
 		// with letters
-		while (word.length() > 0) {
+		while(word.length() > 0){
 			// using the first character in word, find the character's index inside letters
 			// and ignore the case
 			int index = letters.toLowerCase().indexOf(Character.toLowerCase(word.charAt(0)));
 			// if the word character is not in letters, then return false
-			if (index < 0) return false;
-			
+			if(index < 0){
+				return false;
+			}
 			// remove character from word and letters
 			word = word.substring(1);
 			letters = letters.substring(0, index) + letters.substring(index + 1);
@@ -166,6 +169,7 @@ public class WordUtilities {
 		// all word letters were found in letters
 		return true;
 	}
+	
 	/**
 	 *	finds all words that match some or all of a group of alphabetic characters
 	 *	Precondition: letters can only contain alphabetic characters a-z and A-Z
@@ -176,9 +180,11 @@ public class WordUtilities {
 	public ArrayList<String> allWords(String letters) {
 		ArrayList<String> wordsFound = new ArrayList<String>();
 		// check each word in the database with the letters
-		for (String word: words)
-			if (wordMatch(word, letters))
+		for (String word: words){
+			if (wordMatch(word, letters)){
 				wordsFound.add(word);
+			}
+		}
 		return wordsFound;
 	}
 	/**
@@ -187,8 +193,5 @@ public class WordUtilities {
 	public void sortWords() {
 		SortMethods sm = new SortMethods();
 		sm.mergeSort(words);
-		for(int i = 0; i < words.size(); i++) {   
-			System.out.println(words.get(i));
-		}
 	}
 }
