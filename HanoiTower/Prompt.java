@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
 /**
  *	Prompt.java - Uses BufferedReader.
  *	Provides utilities for user input.  This enhances the BufferedReader
@@ -10,9 +14,6 @@
  *	@author	Jonathan Chen 
  *	@since	September 6, 2024
  */
- import java.io.BufferedReader;
- import java.io.InputStreamReader;
- import java.io.IOException;
 public class Prompt{
 	// BufferedReader variables
 	private static InputStreamReader streamReader = new InputStreamReader(System.in);
@@ -71,7 +72,7 @@ public class Prompt{
 	public static int getInt(String ask, int min, int max){
 		int val = 0;
 		do{
-			val = getInt(ask + "(" + min + ", " + max + ")");
+			val = getInt(ask + " (" + min + ", " + max + ")");
 		}while(val < min || val > max);
 		return val;
 	}
@@ -89,7 +90,7 @@ public class Prompt{
 				dec = Double.parseDouble(str);
 				tOrF = true;
 			}
-			catch(NumberFormatException e){
+			catch (NumberFormatException e){
 				tOrF = false;
 			}
 		}
@@ -105,7 +106,7 @@ public class Prompt{
 	public static double getDouble(String ask, double min, double max){
 		double dec2 = 0.0;
 		do{
-			dec2 = getDouble(ask + "(" + min + ", " + max + ")");
+			dec2 = getDouble(ask + " (" + min + ", " + max + ")");
 		}while(dec2 < min || dec2 > max);
 		return dec2;
 	}

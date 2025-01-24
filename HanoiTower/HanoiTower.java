@@ -70,7 +70,7 @@ public class HanoiTower{
 		/*
 		 *	Automated solver method
 		 */
-		//solvePuzzle(args);
+		solvePuzzle(args);
 		// Print out number of moves
 		System.out.println("\nIt took you " + numMoves + " moves with " + levels + " levels.\n");
 	}
@@ -84,7 +84,7 @@ public class HanoiTower{
 		initializeTower();
 		printIntroduction();
 		// Play the game
-		while(! isDone()){
+		while(!isDone()){
 			printTowers();
 			int from = Prompt.getInt("\nMove disk FROM peg", 0, 2);
 			int to = Prompt.getInt("          TO   peg", 0, 2);
@@ -92,7 +92,7 @@ public class HanoiTower{
 				System.out.println("\nERROR: from and to pegs cannot be the same. Try again.\n");
 			}
 			else{
-				if(! moveDisk(from, to)){
+				if(!moveDisk(from, to)){
 					System.out.println("\nERROR: Invalid move. Try again.\n");
 				}
 			}
@@ -150,9 +150,9 @@ public class HanoiTower{
 	public void printIntroduction(){
 		System.out.println("\n");
 		System.out.println("  _____                               __   _   _                   _ ");
-		System.out.println(" |_   _|____      _____ _ __    ___  / _| | | | | __ _ _ __   ___(_)");
+		System.out.println(" |_   _|____      _____ _ __    ___  / _| | | | | __ _ _ __   ____(_)");
 		System.out.println("   | |/ _ \\ \\ /\\ / / _ \\ '__|  / _ \\| |_  | |_| |/ _` | '_ \\ / _ \\| |");
-		System.out.println("   | |(_) \\ V  V /  __/ |    |(_) |  _| |  _  |(_| | | | |(_) | |");
+		System.out.println("   | ||(_) \\ V  V /  __/ |    | (_) |  _| |  _  ||(_| | | | ||(_) | |");
 		System.out.println("   |_|\\___/ \\_/\\_/ \\___|_|     \\___/|_|   |_| |_|\\__,_|_| |_|\\___/|_|");
 		System.out.println("\n");
 		System.out.println("Welcome to the Tower Of Hanoi Game. You are given a wooden board with three tall");
@@ -178,12 +178,9 @@ public class HanoiTower{
 	    getLevels(args);
 	    initializeTower();
 	    printTowers();
-	
 	    // Call the recursive method to solve the puzzle
-	    solveHanoi(levels, 0, 2, 1);  // Move disks from peg 0 to peg 2 using peg 1 as auxiliary
-	
-	    // Print out the number of moves
-	    System.out.println("\nIt took you " + numMoves + " moves with " + levels + " levels.\n");
+	    // Move disks from peg 0 to peg 1 using peg 2 as auxiliary
+	    solveHanoi(levels, 0, 1, 2);
 	}
 	/**
 	 * Recursive method to solve the Tower of Hanoi puzzle.
@@ -201,11 +198,9 @@ public class HanoiTower{
 	    else{
 	        // Move the top n-1 disks from "from" to "auxiliary" peg using "to" as auxiliary
 	        solveHanoi(n - 1, from, auxiliary, to);
-	        
 	        // Move the nth disk from "from" to "to"
 	        moveDisk(from, to);
 	        printTowers();
-	        
 	        // Move the n-1 disks from "auxiliary" to "to" peg using "from" as auxiliary
 	        solveHanoi(n - 1, auxiliary, to, from);
 	    }
@@ -266,7 +261,7 @@ public class HanoiTower{
 	 */
 	public void initializeTower(){
 		// 3 pegs and number of disks or levels of disks
-		tower = new int [3][levels];
+		tower = new int[3][levels];
 		// on first peg(index 0) stack biggest disk number(levels) at 0 column index
 		for(int disk = 0; disk < levels; disk++){
 			tower[0][disk] = levels - disk;
