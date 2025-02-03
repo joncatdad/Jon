@@ -223,10 +223,43 @@ public class Picture extends SimplePicture
    */
   public static void main(String[] args) 
   {
-    Picture beach = new Picture("beach.jpg");
+    Picture beach = new Picture("images/beach.jpg");
     beach.explore();
     beach.zeroBlue();
     beach.explore();
   }
-  
+  public void keepOnlyBlue()
+  {
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels)
+    {
+      for (Pixel pixelObj : rowArray)
+      {
+        pixelObj.setRed(0);
+        pixelObj.setGreen(0);
+      }
+    }
+  }
+  public void negate() {
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels) {
+        for (Pixel pixelObj : rowArray) {
+            pixelObj.setRed(255 - pixelObj.getRed());
+            pixelObj.setGreen(255 - pixelObj.getGreen());
+            pixelObj.setBlue(255 - pixelObj.getBlue());
+        }
+    }
+ }
+ public void grayscale() {
+    Pixel[][] pixels = this.getPixels2D();
+    for (Pixel[] rowArray : pixels) {
+        for (Pixel pixelObj : rowArray) {
+            int avg = (pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
+            pixelObj.setRed(avg);
+            pixelObj.setGreen(avg);
+            pixelObj.setBlue(avg);
+        }
+    }
+ }
+
 } // this } is the end of class Picture, put all new methods before this

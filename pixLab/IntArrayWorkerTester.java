@@ -83,6 +83,7 @@ public class IntArrayWorkerTester{
     worker.setMatrix(nums);
     System.out.println("Array before reverseRows:");
     worker.print();
+    worker.reverseRows();
     System.out.println("Array after reverseRows:");
     worker.print();
   }
@@ -94,5 +95,6 @@ public class IntArrayWorkerTester{
     testGetTotalNested();
     testGetLargest();
     testGetColTotal();
+    testReverseRows();
   }
 }
