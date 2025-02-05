@@ -183,10 +183,14 @@ public class Picture extends SimplePicture{
    * method 
    */
   public static void main(String[] args){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.zeroBlue();
-    beach.explore();
+  //  Picture beach = new Picture("images/beach.jpg");
+  //  beach.explore();
+  //  beach.zeroBlue();
+  //  beach.explore();
+  //  testPixelate();
+  //  testBlur();
+  //  testEnhance();
+    testAddWatermark();
   }
   public void keepOnlyBlue(){
     Pixel[][] pixels = this.getPixels2D();
@@ -204,24 +208,52 @@ public class Picture extends SimplePicture{
             pixelObj.setRed(255 - pixelObj.getRed());
             pixelObj.setGreen(255 - pixelObj.getGreen());
             pixelObj.setBlue(255 - pixelObj.getBlue());
-        }
-    }
+		}
+     }
+  }
+  public void grayscale(){
+     Pixel[][] pixels = this.getPixels2D();
+     for(Pixel[] rowArray : pixels){
+         for(Pixel pixelObj : rowArray){
+             int avg =(pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
+             pixelObj.setRed(avg);
+             pixelObj.setGreen(avg);
+             pixelObj.setBlue(avg);
+         }
+     }
+  }
+  /** Method to test pixelate */
+  public static void testPixelate(){
+	Picture beach = new Picture("images/swan.jpg");
+    beach.explore();
+    beach.pixelate(10);
+    beach.explore();
  }
- public void grayscale(){
-    Pixel[][] pixels = this.getPixels2D();
-    for(Pixel[] rowArray : pixels){
-        for(Pixel pixelObj : rowArray){
-            int avg =(pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
-            pixelObj.setRed(avg);
-            pixelObj.setGreen(avg);
-            pixelObj.setBlue(avg);
-        }
-    }
+ /** Method to test blur */
+ public static void testBlur(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture blurred = beach.blur(10);
+    blurred.explore();
  }
-  /** To pixelate by dividing area into size x size.
- * @param size Side length of square area to pixelate.
- */
-public void pixelate(int size){
+ /** Method to test enhance */
+ public static void testEnhance(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture enhanced = beach.enhance(10);
+    enhanced.explore();
+ }
+ /** Method to test addWatermark */
+ public static void testAddWatermark(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    beach.addWatermark("AP CS 2025");
+    beach.explore();
+ }
+ /** To pixelate by dividing area into size x size.
+  * @param size Side length of square area to pixelate.
+  */
+ public void pixelate(int size){
     Pixel[][] pixels = this.getPixels2D();
     int height = pixels.length;
     int width = pixels[0].length;
@@ -250,15 +282,15 @@ public void pixelate(int size){
             }
         }
     }
-}
-/** Method that blurs the picture
- * @param size Blur size, greater is more blur
- * @return Blurred picture
- */
-public Picture blur(int size){
-    Pixel[][] pixels = this.getPixels2D();
-    Picture result = new Picture(this);
-    Pixel[][] resultPixels = result.getPixels2D();
+ }
+ /** Method that blurs the picture
+  * @param size Blur size, greater is more blur
+  * @return Blurred picture
+  */
+ public Picture blur(int size){
+	Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
     int height = pixels.length;
     int width = pixels[0].length;
     for(int row = 0; row < height; row++){
@@ -282,22 +314,22 @@ public Picture blur(int size){
         }
     }
     return result;
-}
+ }
 /** Method that enhances a picture by getting average Color around
  * a pixel then applies the following formula:
  *
  * pixelColor <- 2 * currentValue - averageValue
  *
- * size is the area to sample for enhancement.
+ * size is the area to sample for blur.
  *
  * @param size Larger means more area to average around pixel
  * and longer compute time.
  * @return enhanced picture
  */
-public Picture enhance(int size){
-    Pixel[][] pixels = this.getPixels2D();
-    Picture result = new Picture(this);
-    Pixel[][] resultPixels = result.getPixels2D();
+ public Picture enhance(int size){
+	Pixel[][] pixels = this.getPixels2D();
+	Picture result = new Picture(pixels.length, pixels[0].length);
+	Pixel[][] resultPixels = result.getPixels2D();
     int height = pixels.length;
     int width = pixels[0].length;
     for(int row = 0; row < height; row++){
@@ -325,9 +357,9 @@ public Picture enhance(int size){
         }
     }
     return result;
-}
-/** Method to enhance fish visibility in the underwater image */
-public void fixUnderwater(){
+ }
+ /** Method to enhance fish visibility in the underwater image */
+ public void fixUnderwater(){
     Pixel[][] pixels = this.getPixels2D();
     for(Pixel[] rowArray : pixels){
         for(Pixel pixelObj : rowArray){
@@ -342,17 +374,17 @@ public void fixUnderwater(){
             pixelObj.setColor(new Color(red, green, blue));
         }
     }
-}
-/** Method to add a text watermark to the image */
-public void addWatermark(String text){
+ }
+ /** Method to add a text watermark to the image */
+ public void addWatermark(String text){
     Graphics2D g2d = this.getBufferedImage().createGraphics();
     // Set font and color(semi-transparent white)
     g2d.setFont(new Font("Arial", Font.BOLD, 40));
     g2d.setColor(new Color(255, 255, 255, 128)); // 128 = 50% transparency
     // Position watermark at bottom right
-    int x = this.getWidth() - 200; 
+    int x = this.getWidth() - 250; 
     int y = this.getHeight() - 50;
     g2d.drawString(text, x, y);
     g2d.dispose();
-}
+ }
 } // this } is the end of class Picture, put all new methods before this

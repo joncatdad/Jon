@@ -56,43 +56,15 @@ public class PictureTester{
     Picture beach = new Picture("images/beach.jpg");
     beach.explore();
     beach.grayscale();
-    beach.explore();
- }
- /** Method to test pixelate */
-public static void testPixelate(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.pixelate(10); // Change 10 to experiment with different sizes
-    beach.explore();
-}
-/** Method to test blur */
-public static void testBlur(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture blurred = beach.blur(5); // Change 5 to experiment with different blur levels
-    blurred.explore();
-}
-/** Method to test enhance */
-public static void testEnhance(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture enhanced = beach.enhance(5); // Change 5 to experiment with enhancement
-    enhanced.explore();
-}
-/** Method to test fixUnderwater */
-public static void testFixUnderwater(){
-    Picture water = new Picture("images/water.jpg");
-    water.explore();
-    water.fixUnderwater();
-    water.explore();
-}
-/** Method to test addWatermark */
-public static void testAddWatermark(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.addWatermark("AP CS 2025");
-    beach.explore();
-}
+	beach.explore();
+  }
+  /** Method to test fixUnderwater */
+  public static void testFixUnderwater(){
+     Picture water = new Picture("images/water.jpg");
+     water.explore();
+     water.fixUnderwater();
+     water.explore();
+  }
   /** Main method for testing.  Every class can have a main
     * method in Java */
   public static void main(String[] args){
@@ -105,7 +77,7 @@ public static void testAddWatermark(){
     //testKeepOnlyGreen();
     //testNegate();
     //testGrayscale();
-    //testFixUnderwater();
+    testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();
     //testMirrorArms();
@@ -121,10 +93,5 @@ public static void testAddWatermark(){
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
     //testGetAverageForColumn(0);
-    //testPixelate();
-    //testBlur();
-    //testEnhance();
-    //testFixUnderwater();
-    testAddWatermark();
   }
 }
