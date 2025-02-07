@@ -81,7 +81,6 @@ public class Picture extends SimplePicture{
       }
     }
   }
-  
   /** Method that mirrors the picture around a 
     * vertical mirror in the center of the picture
     * from left to right */
@@ -109,10 +108,8 @@ public class Picture extends SimplePicture{
     for(int row = 27; row < 97; row++){
       // loop from 13 to just before the mirror point
       for(int col = 13; col < mirrorPoint; col++){
-        
         leftPixel = pixels[row][col];      
-        rightPixel = pixels[row]                       
-                         [mirrorPoint - col + mirrorPoint];
+        rightPixel = pixels[row][mirrorPoint - col + mirrorPoint];
         rightPixel.setColor(leftPixel.getColor());
       }
     }
@@ -183,14 +180,22 @@ public class Picture extends SimplePicture{
    * method 
    */
   public static void main(String[] args){
+	  Picture pic = new Picture();
   //  Picture beach = new Picture("images/beach.jpg");
   //  beach.explore();
   //  beach.zeroBlue();
   //  beach.explore();
-  //  testPixelate();
-  //  testBlur();
-  //  testEnhance();
-    testAddWatermark();
+	pic.run();
+  }
+  public void run(){
+	//testPixelate();
+    //testBlur();
+    //testEnhance();
+    //testAddWatermark();
+    testSwapLeftRight();
+    testStairStep();
+    testLiquify();
+    testWavy();
   }
   public void keepOnlyBlue(){
     Pixel[][] pixels = this.getPixels2D();
@@ -223,32 +228,56 @@ public class Picture extends SimplePicture{
      }
   }
   /** Method to test pixelate */
-  public static void testPixelate(){
-	Picture beach = new Picture("images/swan.jpg");
-    beach.explore();
-    beach.pixelate(10);
-    beach.explore();
+  public void testPixelate(){
+	Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.pixelate(10);
+    swan.explore();
  }
  /** Method to test blur */
- public static void testBlur(){
+ public void testBlur(){
     Picture beach = new Picture("images/beach.jpg");
     beach.explore();
     Picture blurred = beach.blur(10);
     blurred.explore();
  }
  /** Method to test enhance */
- public static void testEnhance(){
+ public void testEnhance(){
     Picture beach = new Picture("images/beach.jpg");
     beach.explore();
     Picture enhanced = beach.enhance(10);
     enhanced.explore();
  }
  /** Method to test addWatermark */
- public static void testAddWatermark(){
+ public void testAddWatermark(){
     Picture beach = new Picture("images/beach.jpg");
     beach.explore();
     beach.addWatermark("AP CS 2025");
     beach.explore();
+ }
+ public void testSwapLeftRight(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture swap = motorcycle.swapLeftRight();
+	swap.explore();
+ }
+ public void testStairStep(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture steps = motorcycle.stairStep(10, 10);
+	steps.explore();
+ }
+ public void testLiquify(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture watery = motorcycle.liquify(100);
+	watery.explore();
+ }
+ public void testWavy(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture waves = motorcycle.wavy(200);
+	waves.explore();
  }
  /** To pixelate by dividing area into size x size.
   * @param size Side length of square area to pixelate.
@@ -386,5 +415,81 @@ public class Picture extends SimplePicture{
     int y = this.getHeight() - 50;
     g2d.drawString(text, x, y);
     g2d.dispose();
+ }
+ /** Moves the left half of the picture to the right and vice versa.*/
+ public Picture swapLeftRight(){
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    Picture result = new Picture(this); // Create a copy of the current picture
+    Pixel[][] newPixels = result.getPixels2D();
+    for(int row = 0; row < height; row++){
+        for(int col = 0; col < width; col++){
+            int newCol =(col + width / 2) % width; // Shift right and wrap
+            newPixels[row][newCol].setColor(pixels[row][col].getColor());
+        }
+    }
+    return result;
+ }
+/** Creates a stair-step distortion effect.
+ * @param shiftCount The number of pixels to shift to the right
+ * @param steps The number of steps
+ * @return The picture with pixels shifted in stair steps
+ */
+ public Picture stairStep(int shiftCount, int steps){
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    Picture result = new Picture(this);
+    Pixel[][] newPixels = result.getPixels2D();
+    for(int row = 0; row < height; row++){
+        int stepShift =(row /(height / steps)) * shiftCount; // Calculate step shift
+        for(int col = 0; col < width; col++){
+            int newCol =(col + stepShift) % width; // Wrap around
+            newPixels[row][newCol].setColor(pixels[row][col].getColor());
+        }
+    }
+    return result;
+ }
+/** Uses a Gaussian curve to warp the horizontal center.
+ * @param maxFactor Max height(shift) of curve in pixels
+ * @return Liquified picture
+ */
+ public Picture liquify(int maxHeight){
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    int bellWidth = height / 3; // Standard deviation for Gaussian curve
+    Picture result = new Picture(this);
+    Pixel[][] newPixels = result.getPixels2D();
+    for(int row = 0; row < height; row++){
+        double exponent = Math.pow(row - height / 2.0, 2) /(2.0 * Math.pow(bellWidth, 2));
+        int rightShift =(int)(maxHeight * Math.exp(-exponent)); // Gaussian shift
+        for(int col = 0; col < width; col++){
+            int newCol =(col + rightShift) % width; // Wrap around
+            newPixels[row][newCol].setColor(pixels[row][col].getColor());
+        }
+    }
+    return result;
+ }
+ /** Creates a sinusoidal wave distortion effect.
+ * @param amplitude The maximum shift of pixels
+ * @return Wavy picture
+ */
+ public Picture wavy(int amplitude){
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    double frequency = 2 * Math.PI / height; // Controls wave frequency
+    Picture result = new Picture(this);
+    Pixel[][] newPixels = result.getPixels2D();
+    for(int row = 0; row < height; row++){
+        int waveShift = (int)(amplitude * Math.sin(frequency * row)); // Sinusoidal shift
+        for(int col = 0; col < width; col++){
+            int newCol = (col + waveShift + width) % width; // Ensure positive index
+            newPixels[row][newCol].setColor(pixels[row][col].getColor());
+        }
+    }
+    return result;
  }
 } // this } is the end of class Picture, put all new methods before this
