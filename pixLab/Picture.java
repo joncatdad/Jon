@@ -185,18 +185,87 @@ public class Picture extends SimplePicture{
   //  beach.explore();
   //  beach.zeroBlue();
   //  beach.explore();
-	pic.run();
+	  pic.run();
   }
   public void run(){
-	//testPixelate();
-    //testBlur();
-    //testEnhance();
-    //testAddWatermark();
+	testKeepOnlyBlue();
+    testNegate();
+    testGrayScale();
+	testPixelate();
+    testBlur();
+    testEnhance();
     testSwapLeftRight();
     testStairStep();
     testLiquify();
     testWavy();
   }
+  public void testKeepOnlyBlue(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    beach.keepOnlyBlue();
+    beach.explore();
+  }
+  public void testNegate(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    beach.negate();
+    beach.explore();
+  }
+  public void testGrayScale(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    beach.grayscale();
+	beach.explore();
+  }
+  /** Method to test pixelate */
+  public void testPixelate(){
+	Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.pixelate(10);
+    swan.explore();
+ }
+ /** Method to test blur */
+ public void testBlur(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture blurred = beach.blur(10);
+    blurred.explore();
+ }
+ /** Method to test enhance */
+ public void testEnhance(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture enhanced = beach.enhance(10);
+    enhanced.explore();
+ }
+ /** Method to test swapping the left and right*/
+ public void testSwapLeftRight(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture swap = motorcycle.swapLeftRight();
+	swap.explore();
+ }
+ /** Method to test stairs step */
+ public void testStairStep(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture steps = motorcycle.stairStep(10, 10);
+	steps.explore();
+ }
+ /** Method to test liquify */
+ public void testLiquify(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture watery = motorcycle.liquify(100);
+	watery.explore();
+ }
+ /** Method to test wavy*/
+ public void testWavy(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture waves = motorcycle.wavy(200);
+	waves.explore();
+ }
   public void keepOnlyBlue(){
     Pixel[][] pixels = this.getPixels2D();
     for(Pixel[] rowArray : pixels){
@@ -227,58 +296,6 @@ public class Picture extends SimplePicture{
          }
      }
   }
-  /** Method to test pixelate */
-  public void testPixelate(){
-	Picture swan = new Picture("images/swan.jpg");
-    swan.explore();
-    swan.pixelate(10);
-    swan.explore();
- }
- /** Method to test blur */
- public void testBlur(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture blurred = beach.blur(10);
-    blurred.explore();
- }
- /** Method to test enhance */
- public void testEnhance(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture enhanced = beach.enhance(10);
-    enhanced.explore();
- }
- /** Method to test addWatermark */
- public void testAddWatermark(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.addWatermark("AP CS 2025");
-    beach.explore();
- }
- public void testSwapLeftRight(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture swap = motorcycle.swapLeftRight();
-	swap.explore();
- }
- public void testStairStep(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture steps = motorcycle.stairStep(10, 10);
-	steps.explore();
- }
- public void testLiquify(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture watery = motorcycle.liquify(100);
-	watery.explore();
- }
- public void testWavy(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture waves = motorcycle.wavy(200);
-	waves.explore();
- }
  /** To pixelate by dividing area into size x size.
   * @param size Side length of square area to pixelate.
   */
@@ -344,17 +361,17 @@ public class Picture extends SimplePicture{
     }
     return result;
  }
-/** Method that enhances a picture by getting average Color around
- * a pixel then applies the following formula:
- *
- * pixelColor <- 2 * currentValue - averageValue
- *
- * size is the area to sample for blur.
- *
- * @param size Larger means more area to average around pixel
- * and longer compute time.
- * @return enhanced picture
- */
+ /** Method that enhances a picture by getting average Color around
+  * a pixel then applies the following formula:
+  *
+  * pixelColor <- 2 * currentValue - averageValue
+  *
+  * size is the area to sample for blur.
+  *
+  * @param size Larger means more area to average around pixel
+  * and longer compute time.
+  * @return enhanced picture
+  */
  public Picture enhance(int size){
 	Pixel[][] pixels = this.getPixels2D();
 	Picture result = new Picture(pixels.length, pixels[0].length);
@@ -387,35 +404,6 @@ public class Picture extends SimplePicture{
     }
     return result;
  }
- /** Method to enhance fish visibility in the underwater image */
- public void fixUnderwater(){
-    Pixel[][] pixels = this.getPixels2D();
-    for(Pixel[] rowArray : pixels){
-        for(Pixel pixelObj : rowArray){
-            int red = pixelObj.getRed();
-            int green = pixelObj.getGreen();
-            int blue = pixelObj.getBlue();
-            // Increase red component to make fish stand out
-            red = Math.min(255,(int)(red * 1.5)); 
-            // Reduce green and blue slightly to enhance contrast
-            green =(int)(green * 0.8);
-            blue =(int)(blue * 0.8);
-            pixelObj.setColor(new Color(red, green, blue));
-        }
-    }
- }
- /** Method to add a text watermark to the image */
- public void addWatermark(String text){
-    Graphics2D g2d = this.getBufferedImage().createGraphics();
-    // Set font and color(semi-transparent white)
-    g2d.setFont(new Font("Arial", Font.BOLD, 40));
-    g2d.setColor(new Color(255, 255, 255, 128)); // 128 = 50% transparency
-    // Position watermark at bottom right
-    int x = this.getWidth() - 250; 
-    int y = this.getHeight() - 50;
-    g2d.drawString(text, x, y);
-    g2d.dispose();
- }
  /** Moves the left half of the picture to the right and vice versa.*/
  public Picture swapLeftRight(){
     Pixel[][] pixels = this.getPixels2D();
@@ -431,11 +419,11 @@ public class Picture extends SimplePicture{
     }
     return result;
  }
-/** Creates a stair-step distortion effect.
- * @param shiftCount The number of pixels to shift to the right
- * @param steps The number of steps
- * @return The picture with pixels shifted in stair steps
- */
+ /** Creates a stair-step distortion effect.
+  * @param shiftCount The number of pixels to shift to the right
+  * @param steps The number of steps
+  * @return The picture with pixels shifted in stair steps
+  */
  public Picture stairStep(int shiftCount, int steps){
     Pixel[][] pixels = this.getPixels2D();
     int height = pixels.length;
@@ -451,10 +439,10 @@ public class Picture extends SimplePicture{
     }
     return result;
  }
-/** Uses a Gaussian curve to warp the horizontal center.
- * @param maxFactor Max height(shift) of curve in pixels
- * @return Liquified picture
- */
+ /** Uses a Gaussian curve to warp the horizontal center.
+  * @param maxFactor Max height(shift) of curve in pixels
+  * @return Liquified picture
+  */
  public Picture liquify(int maxHeight){
     Pixel[][] pixels = this.getPixels2D();
     int height = pixels.length;
@@ -473,9 +461,9 @@ public class Picture extends SimplePicture{
     return result;
  }
  /** Creates a sinusoidal wave distortion effect.
- * @param amplitude The maximum shift of pixels
- * @return Wavy picture
- */
+  * @param amplitude The maximum shift of pixels
+  * @return Wavy picture
+  */
  public Picture wavy(int amplitude){
     Pixel[][] pixels = this.getPixels2D();
     int height = pixels.length;
