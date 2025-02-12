@@ -12,14 +12,25 @@ public class IntArrayWorker{
 	 * @return the total of the values in the array
 	 */
 	public int getTotal(){
-		int total = 0;
+	  int total = 0;
+	  for(int row = 0; row < matrix.length; row++){
+	    for(int col = 0; col < matrix[0].length; col++){
+	      total = total + matrix[row][col];
+	    }
+	  }
+	  return total;
+	}
+	public int getLargest(){
+		int largest = matrix[0][0];
 		for(int row = 0; row < matrix.length; row++){
 			for(int col = 0; col < matrix[0].length; col++){
-				total = total + matrix[row][col];
-			}
-		}
-		return total;
-	}
+				if(matrix[row][col] > largest){
+					largest = matrix[row][col];
+	            }
+	        }
+	    }
+	    return largest;
+	  }
 	/**
 	 * Method to return the total using a nested for-each loop
 	 * @return the total of the values in the array
@@ -31,7 +42,7 @@ public class IntArrayWorker{
 				total = total + item;
 			}
 	    }
-		return total;
+	    return total;
 	  }
 	  /**
 	   * Method to fill with an increasing count
@@ -49,37 +60,31 @@ public class IntArrayWorker{
 	  /**
 	   * print the values in the array in rows and columns
 	   */
-	public void print(){
-		for(int row = 0; row < matrix.length; row++){
-			for(int col = 0; col < matrix[0].length; col++){
-				System.out.print( matrix[row][col] + " " );
-			}
-			System.out.println();
-		}
+	  public void print(){
+	    for(int row = 0; row < matrix.length; row++){
+	      for(int col = 0; col < matrix[0].length; col++){
+	        System.out.print( matrix[row][col] + " " );
+	      }
+	      System.out.println();
+	    }
 	    System.out.println();
-	}
-	/** 
-	 * fill the array with a pattern
-	 */
-	public void fillPattern1(){
-		for(int row = 0; row < matrix.length; row++){
-			for(int col = 0; col < matrix[0].length; col++){
-				if(row < col){
-					matrix[row][col] = 1;
-				}
-				else if(row == col){
-					matrix[row][col] = 2;
-				}
-				else{
-					matrix[row][col] = 3;
-				}
-			}
-		}
-	}
-	/** 
-	 * getting if the value and the rows and column have the same num
-	 */
-	public int getCount(int value){
+	  }
+	  /** 
+	   * fill the array with a pattern
+	   */
+	  public void fillPattern1(){
+	    for(int row = 0; row < matrix.length; row++){
+	      for(int col = 0; col < matrix[0].length; col++){
+	        if(row < col)
+	          matrix[row][col] = 1;
+	        else if(row == col)
+	          matrix[row][col] = 2;
+	        else
+	          matrix[row][col] = 3;
+	      }
+	    }
+	  }
+	 public int getCount(int value){
 	    int count = 0;
 	    for(int row = 0; row < matrix.length; row++){
 	        for(int col = 0; col < matrix[0].length; col++){
@@ -90,9 +95,6 @@ public class IntArrayWorker{
 	    }
 	    return count;
 	}
-	/** 
-	 * getting the number from 0 to a cetan number of column
-	*/
 	public int getColTotal(int col){
 	    int total = 0;
 	    for(int row = 0; row < matrix.length; row++){
@@ -100,23 +102,6 @@ public class IntArrayWorker{
 	    }
 	    return total;
 	}
-	/** 
-	 * getting the largest number
-	 */
-	public int getLargest(){
-		int largest = matrix[0][0];
-		for(int row = 0; row < matrix.length; row++){
-			for(int col = 0; col < matrix[0].length; col++){
-				if(matrix[row][col] > largest){
-					largest = matrix[row][col];
-	            }
-	        }
-	    }
-		return largest;
-	}
-	/** 
-	 * getting the reverse rows
-	 */
 	public void reverseRows(){
 	    for(int row = 0; row < matrix.length; row++){
 	        int left = 0;

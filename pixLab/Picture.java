@@ -180,11 +180,11 @@ public class Picture extends SimplePicture{
    * method 
    */
   public static void main(String[] args){
-	  Picture pic = new Picture();
-  //  Picture beach = new Picture("images/beach.jpg");
-  //  beach.explore();
-  //  beach.zeroBlue();
-  //  beach.explore();
+	Picture pic = new Picture();
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    beach.zeroBlue();
+    beach.explore();
   }
   public void keepOnlyBlue(){
     Pixel[][] pixels = this.getPixels2D();
@@ -429,33 +429,81 @@ public class Picture extends SimplePicture{
     // Load background image
     Picture background = new Picture("greenScreenImages/IndoorHouseLibraryBackground.jpg");
     Pixel[][] bgPixels = background.getPixels2D();
-    // Load foreground images
+    // Load and scale foreground images
     Picture cat = new Picture("greenScreenImages/kitten1GreenScreen.jpg");
+    cat = scaleDownManual(cat, 200, 180);
     Picture mouse = new Picture("greenScreenImages/mouse1GreenScreen.jpg");
+    mouse = scaleDownManual(mouse, 140, 80);
     Pixel[][] catPixels = cat.getPixels2D();
     Pixel[][] mousePixels = mouse.getPixels2D();
-    // Choose position to place foreground images
-    int catStartRow = 250, catStartCol = 450;
-    int mouseStartRow = 300, mouseStartCol = 300;
+    // Positions to place cat and mouse
+    int catStartRow = 350, catStartCol = 500;
+    int mouseStartRow = 350, mouseStartCol = 300;
+    // Green screen threshold values
+    int blendRange = 10;
     // Process cat image
     for(int row = 0; row < catPixels.length; row++){
         for(int col = 0; col < catPixels[0].length; col++){
             Pixel catPixel = catPixels[row][col];
-            if(!(catPixel.getRed() < 100 && catPixel.getGreen() > 150 && catPixel.getBlue() < 100)){
-                bgPixels[catStartRow + row][catStartCol + col].setColor(catPixel.getColor());
+            Pixel bgPixel = bgPixels[catStartRow + row][catStartCol + col];
+            int red = catPixel.getRed();
+            int green = catPixel.getGreen();
+            int blue = catPixel.getBlue();
+            // Check if it's green screen
+            if(green > red * 1.5 && green > blue * 1.5){
+                int greenDiff = green - Math.max(red, blue);
+                if(greenDiff < blendRange){
+                    double alpha = greenDiff /(double) blendRange;
+                    int blendedRed = (int)((1 - alpha) * red + alpha * bgPixel.getRed());
+                    int blendedGreen = (int)((1 - alpha) * green + alpha * bgPixel.getGreen());
+                    int blendedBlue = (int)((1 - alpha) * blue + alpha * bgPixel.getBlue());
+                    bgPixel.setColor(new Color(blendedRed, blendedGreen, blendedBlue));
+                }
+            }
+            else{
+                bgPixel.setColor(catPixel.getColor());
             }
         }
     }
-    // Process mouse image
+    // Process mouse image(same logic)
     for(int row = 0; row < mousePixels.length; row++){
         for(int col = 0; col < mousePixels[0].length; col++){
             Pixel mousePixel = mousePixels[row][col];
-            if(!(mousePixel.getRed() < 100 && mousePixel.getGreen() > 150 && mousePixel.getBlue() < 100)){
-                bgPixels[mouseStartRow + row][mouseStartCol + col].setColor(mousePixel.getColor());
+            Pixel bgPixel = bgPixels[mouseStartRow + row][mouseStartCol + col];
+            int red = mousePixel.getRed();
+            int green = mousePixel.getGreen();
+            int blue = mousePixel.getBlue();
+            if(green > red * 1.5 && green > blue * 1.5){
+                int greenDiff = green - Math.max(red, blue);
+                if(greenDiff < blendRange){
+                    double alpha = greenDiff /(double) blendRange;
+                    int blendedRed = (int)((1 - alpha) * red + alpha * bgPixel.getRed());
+                    int blendedGreen = (int)((1 - alpha) * green + alpha * bgPixel.getGreen());
+                    int blendedBlue = (int)((1 - alpha) * blue + alpha * bgPixel.getBlue());
+                    bgPixel.setColor(new Color(blendedRed, blendedGreen, blendedBlue));
+                }
+            }
+            else{
+                bgPixel.setColor(mousePixel.getColor());
             }
         }
     }
     return background;
+ }
+ public Picture scaleDownManual(Picture original, int newWidth, int newHeight){
+    Pixel[][] originalPixels = original.getPixels2D();
+    Picture resized = new Picture(newHeight, newWidth);
+    Pixel[][] resizedPixels = resized.getPixels2D();
+    double xRatio = (double) originalPixels[0].length / newWidth;
+    double yRatio = (double) originalPixels.length / newHeight;
+    for(int newRow = 0; newRow < newHeight; newRow++){
+        for(int newCol = 0; newCol < newWidth; newCol++){
+            int origX = (int)(newCol * xRatio);
+            int origY = (int)(newRow * yRatio);
+            resizedPixels[newRow][newCol].setColor(originalPixels[origY][origX].getColor());
+        }
+    }
+    return resized;
  }
  /** Method to rotate an image by a given angle(in radians)
   * @param angle Angle of rotation in radians

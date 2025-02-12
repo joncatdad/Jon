@@ -93,36 +93,36 @@ public class PictureTester{
     //testStairStep();
     //testLiquify();
     //testWavy();
-    //testEdgeDetectionBelow();
-    testGreenScreen();
+    testEdgeDetectionBelow();
+    //testGreenScreen();
     //testRotate();
   }
   /** Method to test pixelate */
   public static void testPixelate(){
-	Picture swan = new Picture("images/swan.jpg");
-    swan.explore();
-    swan.pixelate(10);
-    swan.explore();
+	Picture pic = new Picture("images/swan.jpg");
+    pic.explore();
+    pic.pixelate(10);
+    pic.explore();
  }
  /** Method to test blur */
  public static void testBlur(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture blurred = beach.blur(10);
+    Picture pic = new Picture("images/beach.jpg");
+    pic.explore();
+    Picture blurred = pic.blur(10);
     blurred.explore();
  }
  /** Method to test enhance */
  public static void testEnhance(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture enhanced = beach.enhance(10);
+    Picture pic = new Picture("images/beach.jpg");
+    pic.explore();
+    Picture enhanced = pic.enhance(10);
     enhanced.explore();
  }
  /** Method to test swapping the left and right*/
  public static void testSwapLeftRight(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture swap = motorcycle.swapLeftRight();
+	Picture pic = new Picture("images/redMotorcycle.jpg");
+	pic.explore();
+	Picture swap = pic.swapLeftRight();
 	swap.explore();
  }
  /** Method to test stairs step */
@@ -134,33 +134,35 @@ public class PictureTester{
  }
  /** Method to test liquify */
  public static void testLiquify(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture watery = motorcycle.liquify(100);
+	Picture pic = new Picture("images/redMotorcycle.jpg");
+	pic.explore();
+	Picture watery = pic.liquify(100);
 	watery.explore();
  }
- /** Method to test wavy*/
+ /** Method to test wavy */
  public static void testWavy(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture waves = motorcycle.wavy(200);
+	Picture pic = new Picture("images/redMotorcycle.jpg");
+	pic.explore();
+	Picture waves = pic.wavy(200);
 	waves.explore();
  }
+ /** Method to test edge dectection */
  public static void testEdgeDetectionBelow(){
-    Picture pic = new Picture("images/swan.jpg"); // Use an actual image file
+    Picture pic = new Picture("images/beach.jpg"); // Use an actual image file
     pic.explore();
     Picture edgePic = pic.edgeDetectionBelow(20); // Adjust threshold as needed
     edgePic.explore(); // View the result
  }
+ /** Method to test green screen */
  public static void testGreenScreen(){
-    Picture pic = new Picture(); // This is just a placeholder
+    Picture pic = new Picture("images/beach.jpg"); // This is just a placeholder
     Picture result = pic.greenScreen();
     result.explore(); // View result
  }
+ /** Method to test rotate */
  public static void testRotate(){
     Picture pic = new Picture("images/beach.jpg"); // Change to an actual image path
-    pic.explore();
-    Picture rotatedPic = pic.rotate(Math.PI / 4); // Rotate by 30 degrees
+    Picture rotatedPic = pic.rotate(Math.PI / 6); // Rotate by 30 degrees
     rotatedPic.explore();
  }
 }

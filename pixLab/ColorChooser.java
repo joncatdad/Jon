@@ -1,6 +1,7 @@
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import java.awt.Color;
+  
 /**
  * A class to make working with a color chooser easier
  * for students.  It uses a JColorChooser to let the user
@@ -21,7 +22,7 @@ public class ColorChooser{
     JFrame frame = new JFrame();
     frame.setAlwaysOnTop(true);
     // use the color chooser to pick the color
-    color = JColorChooser.showDialog(frame,"Pick a color",color); 
+    color = JColorChooser.showDialog(frame,"Pick a color",color);
     return color;
   }
   /** Main method for testing the ColorChooser */
