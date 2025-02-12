@@ -93,8 +93,8 @@ public class PictureTester{
     //testStairStep();
     //testLiquify();
     //testWavy();
-    testEdgeDetectionBelow();
-    //testGreenScreen();
+    //testEdgeDetectionBelow();
+    testGreenScreen();
     //testRotate();
   }
   /** Method to test pixelate */
@@ -148,21 +148,21 @@ public class PictureTester{
  }
  /** Method to test edge dectection */
  public static void testEdgeDetectionBelow(){
-    Picture pic = new Picture("images/beach.jpg"); // Use an actual image file
+    Picture pic = new Picture("images/swan.jpg");
     pic.explore();
-    Picture edgePic = pic.edgeDetectionBelow(20); // Adjust threshold as needed
+    Picture edgePic = pic.edgeDetectionBelow(20);
     edgePic.explore(); // View the result
  }
  /** Method to test green screen */
  public static void testGreenScreen(){
-    Picture pic = new Picture("images/beach.jpg"); // This is just a placeholder
+    Picture pic = new Picture("images/beach.jpg");
     Picture result = pic.greenScreen();
     result.explore(); // View result
  }
  /** Method to test rotate */
  public static void testRotate(){
-    Picture pic = new Picture("images/beach.jpg"); // Change to an actual image path
-    Picture rotatedPic = pic.rotate(Math.PI / 6); // Rotate by 30 degrees
+    Picture pic = new Picture("images/beach.jpg");
+    Picture rotatedPic = pic.rotate(Math.PI / 6);
     rotatedPic.explore();
  }
 }
