@@ -58,24 +58,6 @@ public class PictureTester{
     beach.grayscale();
 	beach.explore();
   }
- public void testKeepOnlyBlue(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.keepOnlyBlue();
-    beach.explore();
-  }
-  public void testNegate(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.negate();
-    beach.explore();
-  }
-  public void testGrayscale(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.grayscale();
-	beach.explore();
-  }
   /** Main method for testing.  Every class can have a main
     * method in Java */
   public static void main(String[] args){
@@ -83,11 +65,11 @@ public class PictureTester{
     // and comment out the ones you don't want
     // to run
     //testZeroBlue();
-    testKeepOnlyBlue();
+    //testKeepOnlyBlue();
     //testKeepOnlyRed();
     //testKeepOnlyGreen();
-    testNegate();
-    testGrayscale();
+    //testNegate();
+    //testGrayscale();
     //testFixUnderwater();
     //testMirrorVertical();
     //testMirrorTemple();
@@ -104,5 +86,81 @@ public class PictureTester{
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
     //testGetAverageForColumn(0);
+    //testPixelate();
+    //testBlur();
+    //testEnhance();
+    //testSwapLeftRight();
+    //testStairStep();
+    //testLiquify();
+    //testWavy();
+    //testEdgeDetectionBelow();
+    testGreenScreen();
+    //testRotate();
   }
+  /** Method to test pixelate */
+  public static void testPixelate(){
+	Picture swan = new Picture("images/swan.jpg");
+    swan.explore();
+    swan.pixelate(10);
+    swan.explore();
+ }
+ /** Method to test blur */
+ public static void testBlur(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture blurred = beach.blur(10);
+    blurred.explore();
+ }
+ /** Method to test enhance */
+ public static void testEnhance(){
+    Picture beach = new Picture("images/beach.jpg");
+    beach.explore();
+    Picture enhanced = beach.enhance(10);
+    enhanced.explore();
+ }
+ /** Method to test swapping the left and right*/
+ public static void testSwapLeftRight(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture swap = motorcycle.swapLeftRight();
+	swap.explore();
+ }
+ /** Method to test stairs step */
+ public static void testStairStep(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture steps = motorcycle.stairStep(10, 10);
+	steps.explore();
+ }
+ /** Method to test liquify */
+ public static void testLiquify(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture watery = motorcycle.liquify(100);
+	watery.explore();
+ }
+ /** Method to test wavy*/
+ public static void testWavy(){
+	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
+	motorcycle.explore();
+	Picture waves = motorcycle.wavy(200);
+	waves.explore();
+ }
+ public static void testEdgeDetectionBelow(){
+    Picture pic = new Picture("images/swan.jpg"); // Use an actual image file
+    pic.explore();
+    Picture edgePic = pic.edgeDetectionBelow(20); // Adjust threshold as needed
+    edgePic.explore(); // View the result
+ }
+ public static void testGreenScreen(){
+    Picture pic = new Picture(); // This is just a placeholder
+    Picture result = pic.greenScreen();
+    result.explore(); // View result
+ }
+ public static void testRotate(){
+    Picture pic = new Picture("images/beach.jpg"); // Change to an actual image path
+    pic.explore();
+    Picture rotatedPic = pic.rotate(Math.PI / 4); // Rotate by 30 degrees
+    rotatedPic.explore();
+ }
 }

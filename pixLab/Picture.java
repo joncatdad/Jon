@@ -185,87 +185,7 @@ public class Picture extends SimplePicture{
   //  beach.explore();
   //  beach.zeroBlue();
   //  beach.explore();
-	  pic.run();
   }
-  public void run(){
-	testKeepOnlyBlue();
-    testNegate();
-    testGrayScale();
-	testPixelate();
-    testBlur();
-    testEnhance();
-    testSwapLeftRight();
-    testStairStep();
-    testLiquify();
-    testWavy();
-  }
-  public void testKeepOnlyBlue(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.keepOnlyBlue();
-    beach.explore();
-  }
-  public void testNegate(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.negate();
-    beach.explore();
-  }
-  public void testGrayScale(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    beach.grayscale();
-	beach.explore();
-  }
-  /** Method to test pixelate */
-  public void testPixelate(){
-	Picture swan = new Picture("images/swan.jpg");
-    swan.explore();
-    swan.pixelate(10);
-    swan.explore();
- }
- /** Method to test blur */
- public void testBlur(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture blurred = beach.blur(10);
-    blurred.explore();
- }
- /** Method to test enhance */
- public void testEnhance(){
-    Picture beach = new Picture("images/beach.jpg");
-    beach.explore();
-    Picture enhanced = beach.enhance(10);
-    enhanced.explore();
- }
- /** Method to test swapping the left and right*/
- public void testSwapLeftRight(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture swap = motorcycle.swapLeftRight();
-	swap.explore();
- }
- /** Method to test stairs step */
- public void testStairStep(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture steps = motorcycle.stairStep(10, 10);
-	steps.explore();
- }
- /** Method to test liquify */
- public void testLiquify(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture watery = motorcycle.liquify(100);
-	watery.explore();
- }
- /** Method to test wavy*/
- public void testWavy(){
-	Picture motorcycle = new Picture("images/redMotorcycle.jpg");
-	motorcycle.explore();
-	Picture waves = motorcycle.wavy(200);
-	waves.explore();
- }
   public void keepOnlyBlue(){
     Pixel[][] pixels = this.getPixels2D();
     for(Pixel[] rowArray : pixels){
@@ -289,7 +209,7 @@ public class Picture extends SimplePicture{
      Pixel[][] pixels = this.getPixels2D();
      for(Pixel[] rowArray : pixels){
          for(Pixel pixelObj : rowArray){
-             int avg =(pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
+             int avg = (pixelObj.getRed() + pixelObj.getGreen() + pixelObj.getBlue()) / 3;
              pixelObj.setRed(avg);
              pixelObj.setGreen(avg);
              pixelObj.setBlue(avg);
@@ -413,7 +333,7 @@ public class Picture extends SimplePicture{
     Pixel[][] newPixels = result.getPixels2D();
     for(int row = 0; row < height; row++){
         for(int col = 0; col < width; col++){
-            int newCol =(col + width / 2) % width; // Shift right and wrap
+            int newCol = (col + width / 2) % width; // Shift right and wrap
             newPixels[row][newCol].setColor(pixels[row][col].getColor());
         }
     }
@@ -431,9 +351,9 @@ public class Picture extends SimplePicture{
     Picture result = new Picture(this);
     Pixel[][] newPixels = result.getPixels2D();
     for(int row = 0; row < height; row++){
-        int stepShift =(row /(height / steps)) * shiftCount; // Calculate step shift
+        int stepShift = (row /(height / steps)) * shiftCount; // Calculate step shift
         for(int col = 0; col < width; col++){
-            int newCol =(col + stepShift) % width; // Wrap around
+            int newCol = (col + stepShift) % width; // Wrap around
             newPixels[row][newCol].setColor(pixels[row][col].getColor());
         }
     }
@@ -452,9 +372,9 @@ public class Picture extends SimplePicture{
     Pixel[][] newPixels = result.getPixels2D();
     for(int row = 0; row < height; row++){
         double exponent = Math.pow(row - height / 2.0, 2) /(2.0 * Math.pow(bellWidth, 2));
-        int rightShift =(int)(maxHeight * Math.exp(-exponent)); // Gaussian shift
+        int rightShift = (int)(maxHeight * Math.exp(-exponent)); // Gaussian shift
         for(int col = 0; col < width; col++){
-            int newCol =(col + rightShift) % width; // Wrap around
+            int newCol = (col + rightShift) % width; // Wrap around
             newPixels[row][newCol].setColor(pixels[row][col].getColor());
         }
     }
@@ -476,6 +396,100 @@ public class Picture extends SimplePicture{
         for(int col = 0; col < width; col++){
             int newCol = (col + waveShift + width) % width; // Ensure positive index
             newPixels[row][newCol].setColor(pixels[row][col].getColor());
+        }
+    }
+    return result;
+ }
+ /** Method that detects edges by comparing each pixel with the one below
+  * @param threshold Threshold for edge detection
+  * @return Edge-detected black and white picture
+  */
+ public Picture edgeDetectionBelow(int threshold){
+    Pixel[][] pixels = this.getPixels2D();
+    Picture result = new Picture(pixels.length, pixels[0].length);
+    Pixel[][] resultPixels = result.getPixels2D();   
+    for(int row = 0; row < pixels.length - 1; row++){ // Stop before the last row
+        for(int col = 0; col < pixels[0].length; col++){
+            Pixel currentPixel = pixels[row][col];
+            Pixel belowPixel = pixels[row + 1][col]; // Pixel below
+            if(currentPixel.colorDistance(belowPixel.getColor()) > threshold){
+                resultPixels[row][col].setColor(Color.BLACK);
+            }
+            else{
+                resultPixels[row][col].setColor(Color.WHITE);
+            }
+        }
+    }
+    return result;
+ }
+ /** Method that applies a green screen effect
+  * @return Picture with green screen objects placed on a background
+  */
+ public Picture greenScreen(){
+    // Load background image
+    Picture background = new Picture("greenScreenImages/IndoorHouseLibraryBackground.jpg");
+    Pixel[][] bgPixels = background.getPixels2D();
+    // Load foreground images
+    Picture cat = new Picture("greenScreenImages/kitten1GreenScreen.jpg");
+    Picture mouse = new Picture("greenScreenImages/mouse1GreenScreen.jpg");
+    Pixel[][] catPixels = cat.getPixels2D();
+    Pixel[][] mousePixels = mouse.getPixels2D();
+    // Choose position to place foreground images
+    int catStartRow = 250, catStartCol = 450;
+    int mouseStartRow = 300, mouseStartCol = 300;
+    // Process cat image
+    for(int row = 0; row < catPixels.length; row++){
+        for(int col = 0; col < catPixels[0].length; col++){
+            Pixel catPixel = catPixels[row][col];
+            if(!(catPixel.getRed() < 100 && catPixel.getGreen() > 150 && catPixel.getBlue() < 100)){
+                bgPixels[catStartRow + row][catStartCol + col].setColor(catPixel.getColor());
+            }
+        }
+    }
+    // Process mouse image
+    for(int row = 0; row < mousePixels.length; row++){
+        for(int col = 0; col < mousePixels[0].length; col++){
+            Pixel mousePixel = mousePixels[row][col];
+            if(!(mousePixel.getRed() < 100 && mousePixel.getGreen() > 150 && mousePixel.getBlue() < 100)){
+                bgPixels[mouseStartRow + row][mouseStartCol + col].setColor(mousePixel.getColor());
+            }
+        }
+    }
+    return background;
+ }
+ /** Method to rotate an image by a given angle(in radians)
+  * @param angle Angle of rotation in radians
+  * @return Rotated picture
+  */
+ public Picture rotate(double angle){
+    Pixel[][] pixels = this.getPixels2D();
+    int height = pixels.length;
+    int width = pixels[0].length;
+    // Compute new dimensions
+    int newWidth = (int)(Math.abs(width * Math.cos(angle)) + Math.abs(height * Math.sin(angle)));
+    int newHeight = (int)(Math.abs(width * Math.sin(angle)) + Math.abs(height * Math.cos(angle)));
+    Picture result = new Picture(newHeight, newWidth);
+    Pixel[][] resultPixels = result.getPixels2D();
+    int centerX = width / 2;
+    int centerY = height / 2;
+    int newCenterX = newWidth / 2;
+    int newCenterY = newHeight / 2;
+    // Reverse mapping: iterate over the new image
+    for(int newRow = 0; newRow < newHeight; newRow++){
+        for(int newCol = 0; newCol < newWidth; newCol++){
+            // Find corresponding original coordinates
+            int x = newCol - newCenterX;
+            int y = newRow - newCenterY;
+            int origX = (int)(x * Math.cos(-angle) - y * Math.sin(-angle)) + centerX;
+            int origY = (int)(x * Math.sin(-angle) + y * Math.cos(-angle)) + centerY;
+            // Check if the original coordinates are within bounds
+            if(origX >= 0 && origX < width && origY >= 0 && origY < height){
+                resultPixels[newRow][newCol].setColor(pixels[origY][origX].getColor());
+            }
+            else{
+                // Fill empty spots with a nearby pixel(optional: interpolation)
+                resultPixels[newRow][newCol].setColor(Color.WHITE); // Or use average color
+            }
         }
     }
     return result;
