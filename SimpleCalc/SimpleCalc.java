@@ -14,7 +14,9 @@ public class SimpleCalc{
 	private ArrayStack<String> operatorStack;	// operator stack
 	// constructor	
 	public SimpleCalc(){
-		
+		utils = new ExprUtils();
+		valueStack = new ArrayStack<>();   // Initialize value stack
+		operatorStack = new ArrayStack<>(); // Initialize operator stack
 	}
 	public static void main(String[] args){
 		SimpleCalc sc = new SimpleCalc();
@@ -33,8 +35,8 @@ public class SimpleCalc{
 	    Scanner scanner = new Scanner(System.in);
 	    System.out.print("\n -> ");
 	    String input = scanner.nextLine();
-	    while(!input.equalsIgnoreCase("q")){
-	        if(input.equalsIgnoreCase("h")){
+	    while(!input.equals("q")){
+	        if(input.equals("h")){
 	            printHelp();
 	        }
 	        else{
@@ -62,6 +64,9 @@ public class SimpleCalc{
 	 *	@return			a double value of the evaluated expression
 	 */
 	public double evaluateExpression(List<String> tokens){
+	    if(tokens.size() == 1 && tokens.get(0).matches("\\d+(\\.\\d+)?")){
+	        return Double.parseDouble(tokens.get(0));
+	    }
 	    for(String token : tokens){
 	        if(token.matches("\\d+(\\.\\d+)?")){  // If it's a number
 	            valueStack.push(Double.parseDouble(token));
@@ -73,9 +78,9 @@ public class SimpleCalc{
 	            while(!operatorStack.isEmpty() && !operatorStack.peek().equals("(")){
 	                applyOperator();
 	            }
-	            operatorStack.pop(); // Remove '('
+	            operatorStack.pop();  // Remove '('
 	        }
-	        else{ // Operator
+	        else{  // Operator
 	            while(!operatorStack.isEmpty() && hasPrecedence(token, operatorStack.peek())){
 	                applyOperator();
 	            }
@@ -92,24 +97,12 @@ public class SimpleCalc{
 	    double a = valueStack.pop();
 	    String op = operatorStack.pop();
 	    switch(op){
-	        case "+":
-				valueStack.push(a + b);
-				break;
-	        case "-":
-				valueStack.push(a - b);
-				break;
-	        case "*":
-				valueStack.push(a * b);
-				break;
-	        case "/":
-				valueStack.push(a / b);
-				break;
-	        case "%":
-				valueStack.push(a % b);
-				break;
-	        case "^":
-				valueStack.push(Math.pow(a, b));
-				break;
+	        case "+": valueStack.push(a + b); break;
+	        case "-": valueStack.push(a - b); break;
+	        case "*": valueStack.push(a * b); break;
+	        case "/": valueStack.push(a / b); break;
+	        case "%": valueStack.push(a % b); break;
+	        case "^": valueStack.push(Math.pow(a, b)); break;
 	    }
 	}
 	/**
@@ -125,16 +118,11 @@ public class SimpleCalc{
 	 *		otherwise true
 	 */
 	private boolean hasPrecedence(String op1, String op2){
-		if(op1.equals("^")){
-			return false;
-		}
-		if(op2.equals("(") || op2.equals(")")){
-			return false;
-		}
+		if(op1.equals("^")) return false;
+		if(op2.equals("(") || op2.equals(")")) return false;
 		if((op1.equals("*") || op1.equals("/") || op1.equals("%")) 
-							&& (op2.equals("+") || op2.equals("-"))){
+				&&(op2.equals("+") || op2.equals("-")))
 			return false;
-		}
 		return true;
 	}
 }
