@@ -33,8 +33,8 @@ public class SimpleCalc{
 	    Scanner scanner = new Scanner(System.in);
 	    System.out.print("\n -> ");
 	    String input = scanner.nextLine();
-	    while(!input.equals("q")){
-	        if(input.equals("h")){
+	    while(!input.equalsIgnoreCase("q")){
+	        if(input.equalsIgnoreCase("h")){
 	            printHelp();
 	        }
 	        else{
@@ -73,9 +73,9 @@ public class SimpleCalc{
 	            while(!operatorStack.isEmpty() && !operatorStack.peek().equals("(")){
 	                applyOperator();
 	            }
-	            operatorStack.pop();  // Remove '('
+	            operatorStack.pop(); // Remove '('
 	        }
-	        else{  // Operator
+	        else{ // Operator
 	            while(!operatorStack.isEmpty() && hasPrecedence(token, operatorStack.peek())){
 	                applyOperator();
 	            }
@@ -92,12 +92,24 @@ public class SimpleCalc{
 	    double a = valueStack.pop();
 	    String op = operatorStack.pop();
 	    switch(op){
-	        case "+": valueStack.push(a + b); break;
-	        case "-": valueStack.push(a - b); break;
-	        case "*": valueStack.push(a * b); break;
-	        case "/": valueStack.push(a / b); break;
-	        case "%": valueStack.push(a % b); break;
-	        case "^": valueStack.push(Math.pow(a, b)); break;
+	        case "+":
+				valueStack.push(a + b);
+				break;
+	        case "-":
+				valueStack.push(a - b);
+				break;
+	        case "*":
+				valueStack.push(a * b);
+				break;
+	        case "/":
+				valueStack.push(a / b);
+				break;
+	        case "%":
+				valueStack.push(a % b);
+				break;
+	        case "^":
+				valueStack.push(Math.pow(a, b));
+				break;
 	    }
 	}
 	/**
@@ -113,11 +125,16 @@ public class SimpleCalc{
 	 *		otherwise true
 	 */
 	private boolean hasPrecedence(String op1, String op2){
-		if(op1.equals("^")) return false;
-		if(op2.equals("(") || op2.equals(")")) return false;
-		if((op1.equals("*") || op1.equals("/") || op1.equals("%")) 
-				&&(op2.equals("+") || op2.equals("-")))
+		if(op1.equals("^")){
 			return false;
+		}
+		if(op2.equals("(") || op2.equals(")")){
+			return false;
+		}
+		if((op1.equals("*") || op1.equals("/") || op1.equals("%")) 
+							&& (op2.equals("+") || op2.equals("-"))){
+			return false;
+		}
 		return true;
 	}
 }

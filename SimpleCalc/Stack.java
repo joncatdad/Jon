@@ -3,7 +3,7 @@
  *	From Litvin Ch 21, P 529
  *	@author	Mr Greenstein
  */
-public interface Stack<E> {
+public interface Stack<E>{
 	/**	@return		true if the stack is empty; false otherwise */
 	boolean isEmpty();
 	/**	@return		the object on top of the stack */
