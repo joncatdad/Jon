@@ -19,8 +19,9 @@ import java.util.EmptyStackException;
 	 }
 	 /** @return the top element on the stack */
 	 public E peek(){
-		 if(theStack.isEmpty())
+		 if(theStack.isEmpty()){
 			 throw new EmptyStackException();
+		 }
 		 return theStack.get(theStack.size() - 1);
 	 }
 	 /** @param obj     the object to push onto the top of the stack */
@@ -29,8 +30,9 @@ import java.util.EmptyStackException;
 	 }
 	 /** @return         the object removed from the top of the stack */
 	 public E pop(){
-		 if(theStack.isEmpty())
+		 if(theStack.isEmpty()){
 			 throw new EmptyStackException();
+		 }
 		 return theStack.remove(theStack.size() - 1);
 	 }
  }
