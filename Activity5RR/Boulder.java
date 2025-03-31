@@ -26,7 +26,6 @@ public class Boulder extends Actor{
             if(getGrid() != null && getLocation() != null){
                 Kaboom explosion = new Kaboom();
                 explosion.putSelfInGrid(getGrid(), getLocation());
-                removeSelfFromGrid();
             }
         }
     }
