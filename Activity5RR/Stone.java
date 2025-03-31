@@ -1,6 +1,8 @@
+
 import info.gridworld.actor.Rock;
 import info.gridworld.grid.Location;
 import java.awt.Color;
+
 public class Stone extends Rock{
     private int lifetime;
     private static final int THRESHOLD = 10; // Turns green when below this value
