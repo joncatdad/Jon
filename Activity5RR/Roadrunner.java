@@ -1,63 +1,70 @@
 
-import info.gridworld.actor.Critter;
+import info.gridworld.actor.Actor;
 import info.gridworld.grid.Location;
 import java.util.ArrayList;
-import java.awt.Color;
 import java.util.Random;
 import info.gridworld.actor.Actor;
 
-public class Roadrunner extends Critter{
+public class Roadrunner extends Actor {
     private Random rand = new Random();
-    public Roadrunner(){
+    public Roadrunner() {
         setColor(null);
         setDirection(Location.NORTH);
     }
-    public ArrayList<Actor> getActors(){
-        return new ArrayList<Actor>(); // Roadrunner doesn't process actors
+    public void act() {
+        if (getGrid() == null || getLocation() == null) return; // Prevent errors
+        Location moveLoc = getMoveLocation();
+        if (moveLoc != null) {
+            makeMove(moveLoc);
+        }
     }
-    public ArrayList<Location> getMoveLocations(){
+    public Location getMoveLocation() {
         ArrayList<Location> locs = new ArrayList<>();
+        if (getGrid() == null || getLocation() == null) return null; // Check for null grid
         Location current = getLocation();
         int direction = getDirection();
         Location next = current;
-        for(int i = 1; i <= 3; i++){
-            next = next.getAdjacentLocation(direction);
-            if(!getGrid().isValid(next)) break;
-            Actor neighbor = getGrid().get(next);
-            if(neighbor == null || neighbor instanceof Boulder || neighbor instanceof Coyote){
-                locs.add(next);
-            }
-            if(neighbor instanceof Stone || neighbor instanceof SickCoyote || neighbor instanceof Kaboom){
-                break;
-            }
-        }
-        return locs;
-    }
-    public Location selectMoveLocation(ArrayList<Location> locs){
-        if(locs.isEmpty()){
-			return getLocation();
+        boolean stopMoving = false;
+		for (int i = 1; i <= 3 && !stopMoving; i++) {
+		    next = next.getAdjacentLocation(direction);
+		    if (!getGrid().isValid(next)) {
+		        stopMoving = true;
+		    } else {
+		        Actor neighbor = getGrid().get(next);
+		        if (neighbor == null || neighbor instanceof Boulder || neighbor instanceof Coyote) {
+		            locs.add(next);
+		        } else if (neighbor instanceof Stone || neighbor instanceof SickCoyote || neighbor instanceof Kaboom) {
+		            stopMoving = true; // Stops further movement
+		        }
+		    }
 		}
-        return locs.get(rand.nextInt(locs.size()));
-    }
-    public void makeMove(Location loc){
-        if(loc.equals(getLocation())){
-			return;
+        if (locs.isEmpty()) {
+		    return null;
+		} else {
+		    return locs.get(rand.nextInt(locs.size()));
 		}
+
+    }
+    public void makeMove(Location loc) {
+        if (loc == null || getGrid() == null) return;
         Actor neighbor = getGrid().get(loc);
-        if(neighbor instanceof Boulder){
+
+        if (neighbor instanceof Boulder) {
             getGrid().remove(loc);
             getGrid().put(loc, new Kaboom());
             getGrid().remove(getLocation()); // Remove Roadrunner
+            return; // Prevent further movement
         }
-        else if(neighbor instanceof Coyote){
-            Location oldLoc = getLocation();
+        else if (neighbor instanceof Coyote) {
+            getGrid().remove(neighbor.getLocation()); // Remove Coyote
             moveTo(loc);
+
             ArrayList<Location> emptyLocs = getGrid().getEmptyAdjacentLocations(loc);
-            if(!emptyLocs.isEmpty()){
+            if (!emptyLocs.isEmpty()) {
                 getGrid().put(emptyLocs.get(rand.nextInt(emptyLocs.size())), new SickCoyote());
             }
         }
-        else{
+        else {
             moveTo(loc);
         }
     }

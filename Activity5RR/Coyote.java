@@ -37,18 +37,25 @@ public class Coyote extends Critter{
             }
         }
         // Drop a Stone every 5 steps
-        if(steps == 0 && getGrid() != null){
-            for(int dir = 0; dir < 360; dir += 45){
-                Location stoneLoc = getLocation().getAdjacentLocation(dir);
-                if(getGrid().isValid(stoneLoc) && getGrid().get(stoneLoc) == null){
-                    new Stone().putSelfInGrid(getGrid(), stoneLoc);
-                    break;
-                }
-            }
-        }
+        if (steps == 0 && getGrid() != null) {
+		    boolean stonePlaced = false;
+		    for (int dir = 0; dir < 360 && !stonePlaced; dir += 45) {
+		        Location stoneLoc = getLocation().getAdjacentLocation(dir);
+		        if (getGrid().isValid(stoneLoc) && getGrid().get(stoneLoc) == null) {
+		            new Stone().putSelfInGrid(getGrid(), stoneLoc);
+		            stonePlaced = true; // Prevents further placements
+		        }
+		    }
+		}
     }
     private boolean canMove(){
         Location next = getLocation().getAdjacentLocation(getDirection());
-        return getGrid().isValid(next) && getGrid().get(next) == null;
+        if (!getGrid().isValid(next)) {
+		    return false;
+		}
+		if (getGrid().get(next) != null) {
+		    return false;
+		}
+		return true;
     }
 }
