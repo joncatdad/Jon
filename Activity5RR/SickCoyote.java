@@ -5,8 +5,7 @@ import java.awt.Color;
 
 public class SickCoyote extends Actor{
     private int lifetime;
-    private int stepCounter = 0;  // New counter
-    private static final int THRESHOLD = 10;
+    private static final int THRESHOLD = 30;
     public SickCoyote(){
         setColor(null); // No color for SickCoyote
         lifetime = THRESHOLD;
@@ -16,10 +15,7 @@ public class SickCoyote extends Actor{
         this.lifetime = lifetime;
     }
 	public void act() {
-	    stepCounter++;   
-	    if (stepCounter % 3 == 0) { // Only decrease lifetime every 3 steps
-	        lifetime--;
-	    }
+	    lifetime--;
 	    if (lifetime <= 0 && getGrid() != null) {
 	        Location loc = getLocation();
 	        getGrid().remove(loc);
