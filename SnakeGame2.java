@@ -2,8 +2,11 @@ import java.util.Random;
 import java.util.Scanner;
 import java.io.PrintWriter;
 /**
- *	Snake Game - <Description goes here>
- *	
+ *	Snake Game - Controls the entire game: initializing the board,
+ *  handling user input (w/a/s/d), moving the snake,
+ *  placing targets, detecting collisions, tracking score,
+ *  and saving/loading the game state.
+ * 
  *	@author	Jonathan Chen
  *	@since	May 5, 2025
  */
@@ -162,8 +165,9 @@ public class SnakeGame{
 	}
 }
 /**
- *	SnakeBoard - Console-based board for Snake game
- *
+ *	SnakeBoard - Manages the visual grid of the game using a 2D char[][] array,
+ *  where the snake and the target are rendered as ASCII characters.
+ * 
  *	@author Jonathan Chen
  *	@since May 5, 2025
  */
@@ -267,7 +271,9 @@ public class Coordinate implements Comparable<Coordinate>{
 import java.util.NoSuchElementException;
 
 /**
- *	SinglyLinkedList -(description)
+ *	SinglyLinkedList - Implements a basic singly linked list to store
+ *  elements (used for tracking the snake's body as a list
+ *  of Coordinate objects).
  *
  *	@author	Jonathan Chen
  *	@since	April 29, 2025
