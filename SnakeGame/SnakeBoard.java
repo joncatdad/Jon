@@ -1,5 +1,6 @@
 /**
- *	<Describe the SnakeBoard here>
+ *	Manages the visual grid of the game using a 2D char[][] array,
+ *  where the snake and the target are rendered as ASCII characters.
  *
  *	@author	Jonathan Chen
  *	@since	May 5, 2025

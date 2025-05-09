@@ -1,7 +1,9 @@
 import java.util.NoSuchElementException;
 
 /**
- *	SinglyLinkedList -(description)
+ *	SinglyLinkedList - Implements a basic singly linked list to store
+ *  elements (used for tracking the snake's body as a list
+ *  of Coordinate objects).
  *
  *	@author	Jonathan Chen
  *	@since	April 29, 2025

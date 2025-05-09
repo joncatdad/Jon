@@ -1,6 +1,9 @@
 import javax.swing.JFrame;
 /**
- *	Snake Game - <Description goes here>
+ *	Controls the entire game: initializing the board,
+ *  handling user input (w/a/s/d), moving the snake,
+ *  placing targets, detecting collisions, tracking score,
+ *  and saving/loading the game state.
  *	
  *	@author	Jonathan Chen
  *	@since	May 5, 2025
