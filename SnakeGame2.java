@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.io.PrintWriter;
 /**
  *	Snake Game - Controls the entire game: initializing the board,
- *  handling user input (w/a/s/d), moving the snake,
+ *  handling user input(w/a/s/d), moving the snake,
  *  placing targets, detecting collisions, tracking score,
  *  and saving/loading the game state.
  * 
@@ -17,21 +17,20 @@ public class SnakeGame{
 	private int score;
 	/* Constructor */
 	public SnakeGame(){
-		board = new SnakeBoard(20, 25);
-		snake = new Snake(10, 12); // center start
+		board = new SnakeBoard(20, 26);
+		snake = new Snake(5, 8);
 		score = 0;
 		placeNewTarget();
 	}
 	public static void main(String[] args){
 		SnakeGame game = new SnakeGame();
 		game.printIntroduction();
-		game.helpMenu();
 		boolean playing = true;
-		while (playing){
+		while(playing){
 			game.board.printBoard(game.snake, game.target);
-			String input = Prompt.getString("Enter move (w/a/s/d), h for help, f to save, r to load, q to quit").toLowerCase();
-
-			switch (input){
+			String input = Prompt.getString("Score: " + game.score 
+			+ " (w - North, s - South, d - East, a - West, h - Help) ").toLowerCase();
+			switch(input){
 				case "w": case "a": case "s": case "d":
 					playing = game.moveSnake(input);
 					break;
@@ -45,7 +44,14 @@ public class SnakeGame{
 					game.loadGame("snakeGameSave.txt");
 					break;
 				case "q":
-					playing = false;
+					String answer = Prompt.getString("Do you really want to quit? (y or n) ").toLowerCase();
+					if(answer.equals("y")){
+						System.out.println("Thanks for playing SnakeGame!!!");
+						playing = false;
+					}
+					else{
+						playing = true;
+					}
 					break;
 				default:
 					System.out.println("Invalid command.");
@@ -58,7 +64,7 @@ public class SnakeGame{
 		Coordinate head = snake.get(0).getValue();
 		int row = head.getRow();
 		int col = head.getCol();
-		switch (direction){
+		switch(direction){
 			case "w": row--; break;
 			case "s": row++; break;
 			case "a": col--; break;
@@ -69,17 +75,17 @@ public class SnakeGame{
 		}
 		Coordinate newHead = new Coordinate(row, col);
 		// Check wall collision
-		if (row < 0 || row >= board.getHeight() || col < 0 || col >= board.getWidth()){
+		if(row < 0 || row >= board.getHeight() || col < 0 || col >= board.getWidth()){
 			System.out.println("You hit a wall!");
 			return false;
 		}
 		// Check self collision
-		if (snake.contains(newHead)){
+		if(snake.contains(newHead)){
 			System.out.println("You ran into yourself!");
 			return false;
 		}
 		snake.addFirst(newHead);
-		if (newHead.equals(target)){
+		if(newHead.equals(target)){
 			score++;
 			placeNewTarget();
 		}
@@ -91,13 +97,14 @@ public class SnakeGame{
 	/** Places a new target not on the snake */
 	public void placeNewTarget(){
 		Random rand = new Random();
-		while (true){
+		boolean tOrF = true;
+		while(tOrF){
 			int row = rand.nextInt(board.getHeight());
 			int col = rand.nextInt(board.getWidth());
 			Coordinate t = new Coordinate(row, col);
-			if (!snake.contains(t)){
+			if(!snake.contains(t)){
 				target = t;
-				break;
+				tOrF = false;
 			}
 		}
 	}
@@ -106,7 +113,7 @@ public class SnakeGame{
 		PrintWriter out = FileUtils.openToWrite(filename);
 		out.println(score);
 		out.println(snake.size());
-		for (int i = 0; i < snake.size(); i++){
+		for(int i = 0; i < snake.size(); i++){
 			Coordinate c = snake.get(i).getValue();
 			out.println(c.getRow() + " " + c.getCol());
 		}
@@ -114,14 +121,13 @@ public class SnakeGame{
 		out.close();
 		System.out.println("Game saved to " + filename);
 	}
-
 	/** Load game from file */
 	public void loadGame(String filename){
 		Scanner in = FileUtils.openToRead(filename);
 		score = Integer.parseInt(in.nextLine());
 		int size = Integer.parseInt(in.nextLine());
 		snake.clear();
-		for (int i = 0; i < size; i++){
+		for(int i = 0; i < size; i++){
 			int row = in.nextInt();
 			int col = in.nextInt();
 			snake.add(new Coordinate(row, col));
@@ -138,7 +144,7 @@ public class SnakeGame{
 		System.out.println(" /   _____/ ____ _____  |  | __ ____  /  _____/_____    _____   ____");
 		System.out.println(" \\_____  \\ /    \\\\__  \\ |  |/ // __ \\/   \\  ___\\__  \\  /     \\_/ __ \\");
 		System.out.println(" /        \\   |  \\/ __ \\|    <\\  ___/\\    \\_\\  \\/ __ \\|  Y Y  \\  ___/");
-		System.out.println("/_______  /___|  (____  /__|_ \\\\___  >\\______  (____  /__|_|  /\\___  >");
+		System.out.println("/_______  /___| (____  /__|_ \\\\___  >\\______ (____  /__|_|  /\\___  >");
 		System.out.println("        \\/     \\/     \\/     \\/    \\/        \\/     \\/      \\/     \\/");
 		System.out.println("\nWelcome to SnakeGame!");
 		System.out.println("\nA snake @****** moves around a board " +
