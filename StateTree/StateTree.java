@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 /**
  *	The driver program for creating and manipulating
  *	a binary tree of state information.
@@ -11,9 +10,8 @@ public class StateTree{
 	// Fields
 	private BinaryTree<State> bTree;
 	private final String IN_FIlE = "states2.txt";	// input file
-	
-	public StateTree(){ }
-	
+	public StateTree(){
+	}
 	public static void main(String [] args){
 		StateTree treeOrder = new StateTree();
 		treeOrder.mainMenu();
@@ -169,10 +167,12 @@ public class StateTree{
 			if(level < 0){
 				tOrF = false;
 			}
-			System.out.println("\nLevel " + level);
-			printLevelRecursive(bTree.getRoot(), 0, level);
-			System.out.println();
-			System.out.println();
+			else{
+				System.out.println("\nLevel " + level);
+				printLevelRecursive(bTree.getRoot(), 0, level);
+				System.out.println();
+				System.out.println();
+			}
 		}
 	}
 	private void printLevelRecursive(TreeNode<State> node, int current, int target){

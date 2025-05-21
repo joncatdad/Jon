@@ -17,10 +17,8 @@ import java.io.IOException;
 
 public class Prompt{
 	// BufferedReader variables
-	
 	private static InputStreamReader streamReader = new InputStreamReader(System.in);
 	private static BufferedReader buffReader = new BufferedReader(streamReader);
-
 	/**
 	 *	Prompts user for string of characters and returns the string.
 	 *	@param ask  The prompt line
