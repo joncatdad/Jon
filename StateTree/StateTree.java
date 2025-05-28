@@ -45,13 +45,22 @@ public class StateTree{
 						System.out.println();
 						break;
 					case '3' :
-						find();
+						if(bTree != null){
+							find();
+						}
 						break;
 					case '4' :
-						delete();
+						if(bTree != null){
+							delete();
+						}
 						break;
 					case '5' :
-						System.out.println("Number of nodes = " + size(bTree.getRoot()));
+						if(bTree != null){
+							System.out.println("Number of nodes = " + size(bTree.getRoot()));
+						}
+						else{
+							System.out.println("Number of nodes = 0");
+						}
 						System.out.println();
 						break;
 					case '6' :
@@ -62,10 +71,17 @@ public class StateTree{
 						System.out.println();
 						break;
 					case '8' :
-						if(depth(bTree.getRoot(), -1) > -1)
-							System.out.println("Depth of tree = " + depth(bTree.getRoot(), -1));
-						else
+						if(bTree != null){
+							if(depth(bTree.getRoot(), -1) > -1){
+								System.out.println("Depth of tree = " + depth(bTree.getRoot(), -1));
+							}
+							else{
+								System.out.println("Tree empty");
+							}
+						}
+						else{
 							System.out.println("Tree empty");
+						}
 						System.out.println();
 						break;
 				}
@@ -169,8 +185,10 @@ public class StateTree{
 			}
 			else{
 				System.out.println("\nLevel " + level);
-				printLevelRecursive(bTree.getRoot(), 0, level);
-				System.out.println();
+				if(bTree != null){
+					printLevelRecursive(bTree.getRoot(), 0, level);
+					System.out.println();
+				}
 				System.out.println();
 			}
 		}
