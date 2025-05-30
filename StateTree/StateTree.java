@@ -31,12 +31,15 @@ public class StateTree{
 			System.out.println("(Q) Quit\n");
 			choice = Prompt.getString("Choice");
 			System.out.println();
-			if('1' <= choice.charAt(0) && choice.charAt(0) <= '8'){
-				switch(choice.charAt(0)){
-					case '1' :	
+			if(choice.equals("1") || choice.equals("2")
+			|| choice.equals("3") || choice.equals("4")
+			|| choice.equals("5") || choice.equals("6")
+			|| choice.equals("7") || choice.equals("8")){
+				switch(choice){
+					case "1":	
 						loadData();		
 						break;
-					case '2' :
+					case "2":
 						System.out.println();
 						System.out.println("The tree printed inorder\n");
 						if(bTree != null){
@@ -44,17 +47,13 @@ public class StateTree{
 						}
 						System.out.println();
 						break;
-					case '3' :
-						if(bTree != null){
-							find();
-						}
+					case "3":
+						find();
 						break;
-					case '4' :
-						if(bTree != null){
-							delete();
-						}
+					case "4":
+						delete();
 						break;
-					case '5' :
+					case "5":
 						if(bTree != null){
 							System.out.println("Number of nodes = " + size(bTree.getRoot()));
 						}
@@ -63,14 +62,14 @@ public class StateTree{
 						}
 						System.out.println();
 						break;
-					case '6' :
+					case "6":
 						clear();
 						break;
-					case '7' :
+					case "7":
 						printLevel();
 						System.out.println();
 						break;
-					case '8' :
+					case "8":
 						if(bTree != null){
 							if(depth(bTree.getRoot(), -1) > -1){
 								System.out.println("Depth of tree = " + depth(bTree.getRoot(), -1));
@@ -115,9 +114,15 @@ public class StateTree{
 		while(tOrF){
 			String name = Prompt.getString("Enter state name to search(Q to quit)").toLowerCase();
 			State target = new State(name); // temporary for comparison
-			State found = findRecursive(bTree.getRoot(), target);
-			if(found != null){
-				System.out.println("\n" + found + "\n");
+			if(bTree != null){
+				State found = findRecursive(bTree.getRoot(), target);
+				if(found != null){
+					System.out.println("\n" + found + "\n");
+				}
+				else{
+					System.out.println("\n" + name + " not found\n");
+					if(name.equals("q")) tOrF = false;
+				}
 			}
 			else{
 				System.out.println("\n" + name + " not found\n");
@@ -146,16 +151,18 @@ public class StateTree{
 		while(tOrF){
 			String name = Prompt.getString("Enter state name to delete(Q to quit)").toLowerCase();
 			State temp = new State(name);
-			if(findRecursive(bTree.getRoot(), temp) != null){
-				bTree.remove(temp);
-				System.out.println();
-				System.out.println(name.substring(0, 1).toUpperCase() + name.substring(1) + " has been deleted!!\n");
-			}
-			else{
-				System.out.println();
-				System.out.println(name + " not found\n");
-				if(name.equals("q")){
-					tOrF = false;
+			if(bTree != null){
+				if(findRecursive(bTree.getRoot(), temp) != null){
+					bTree.remove(temp);
+					System.out.println();
+					System.out.println(name.substring(0, 1).toUpperCase() + name.substring(1) + " has been deleted!!\n");
+				}
+				else{
+					System.out.println();
+					System.out.println(name + " not found\n");
+					if(name.equals("q")){
+						tOrF = false;
+					}
 				}
 			}
 		}

@@ -14,9 +14,9 @@ public class State implements Comparable<State>{
 	private int month;				// month joined Union
 	private int day;				// day joined Union
 	private int year;				// year joined Union
-	public State(String name, String abbreviation, int population, int area, int reps, String capital, int month, int day, int year){
+	public State(String name, String abbr, int population, int area, int reps, String capital, int month, int day, int year){
 		this.name = name;
-		this.abbreviation = abbreviation;
+		this.abbreviation = abbr;
 		this.population = population;
 		this.area = area;
 		this.reps = reps;
